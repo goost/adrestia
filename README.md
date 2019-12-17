@@ -5,6 +5,8 @@ Improve your life with Adrestia.
 
 ## Architecture
 
+![](./images/architecture.png)
+
 ## Notes
 Minimal Version
 * modular
