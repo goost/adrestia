@@ -4,6 +4,9 @@
     - [ ] Set-up automatic semantic versioning
     - [ ] Set-up automatic release creation
         - What does a release entail?
+    - [ ] Set-up automatic docs creation
+        - Github pages?
+    - [ ] Lint ansible scripts and everything
 - [ ] Bootstrap
     - [ ] O: AnsiblePlay: Encrypt System (?)
         - Non-trivial + Complicates startup (encryption needed via dropbear + ssh + passfifo key)
@@ -112,6 +115,7 @@
         - Either way, this is __NOT__ minimal :D
     - [ ] Do we need Traefic or Caddy for proxing?
 - [ ] O: Optional 
+    - [ ] AnsibleRole: LDAP Server for automatic login configuration on all supported services
     - [ ] AnsibleRole: Bitwarden
         - Complicated, very so
     - [ ] AnsibleRole: Startpage/HomePage for all Services
