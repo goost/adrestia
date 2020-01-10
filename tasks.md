@@ -1,0 +1,134 @@
+# Tasks
+
+- [ ] Repo:
+    - [ ] Set-up automatic semantic versioning
+    - [ ] Set-up automatic release creation
+        - What does a release entail?
+- [ ] Bootstrap
+    - [ ] O: AnsiblePlay: Encrypt System (?)
+        - Non-trivial + Complicates startup (encryption needed via dropbear + ssh + passfifo key)
+        - Does it always so? Maybe less secure but easier way exists?
+    - [ ] AnsiblePlay: SetUp Python
+    - [ ] AnsiblePlay: Install docker + compose
+    - [ ] AnsiblePlay: SetUp VPN Connection
+        - [ ] Setup docker bridge network for services
+        - [ ] Use docker openVPN image for key creation
+        - [ ] Leave keys at server or backup locally?
+            - At server: easier, less secure, no backup -> server crash, all puff
+            - Local: harder to maintain(need to scp every time?), backup in user's hands, more secure? less secure?
+            - -> encrypted backup local + leave at server?
+        - [ ] Create Client Config
+            - With Extra route + DNS push 
+        - [ ] SCP client config to local
+        - [ ] Create OpenVPN image with enabled DNS port-forwarding
+            - Jeez, how the heck did we do that? What was the name of the program? XD
+        - [ ] Create Autostart for openvpn container
+            - Systemd service vs. docker restart always
+    - [ ] Install OpenVPN on local (?)
+        - Or must client to on your own?
+        - Or write complete program which uses OpenVPN lib for connection?
+            - Way to overkill for now :D
+    - [ ] O: Reconnect via OpenVPN (?)
+    - [ ] AnsiblePlay: Harden System
+        - [ ] Change SSH Port
+        - [ ] Create new Keys (? -> Preexisting are bad because? User used PW login!)
+        - [ ] Set Up Firewall (or setup Hoster-Firewall?)
+        - [ ] SetUp unattended updates
+            - Auto-restart vs. no auto-restart
+                - Bad on encrypted system, easy on non
+        - [ ] O: Sophisticated auto-update for docker-images
+            - Cron Job?
+            - Docker Watchtower?
+            - Or Each Service-Play sets up own update routine?
+- [ ] Minimal
+    - [ ] AnsibleRole: Nextcloud
+        - [ ] Check for existence of service
+        - [ ] Create docker-compose for service
+            - [ ] Nextcloud build with extra support
+            - [ ] DB + Redis
+            - [ ] OnlyOffice
+                - [ ] O: OnlyOffice Connection auto-configure via _occ_ or direct database manipulation (?)
+        - [ ] Create role with needed vars and copy compose file
+        - [ ] start service on server via role
+        - [ ] Either walk user through initial setup or configure automatically via environment vars or similar
+        - [ ] Tell user PWs/to keep them safe
+        - [ ] Set-up auto updates (if not set-up centralized)
+        - [ ] O: Open browser with webpage of service (?)
+            - Better summary at installation end?
+    - [ ] AnsibleRole: Firefly III
+        - [ ] Check for existence of service
+        - [ ] Create docker-compose for service
+            - [ ] Firefly III
+            - [ ] DB 
+            - [ ] Cron
+        - [ ] Create role with needed vars and copy compose file
+        - [ ] start service on server via role
+        - [ ] Either walk user through initial setup or configure automatically via environment vars or similar
+        - [ ] Tell user PWs/to keep them safe
+        - [ ] Set-up auto updates (if not set-up centralized)
+        - [ ] O: Open browser with webpage of service (?)
+            - Better summary at installation end?
+    - [ ] AnsibleRole: Piwigo Photosoftware
+        - [ ] Check for existence of service
+        - [ ] Create docker-compose for service
+            - [ ] Piwigo
+            - [ ] DB 
+            - [ ] ... ?
+        - [ ] Create role with needed vars and copy compose file
+        - [ ] start service on server via role
+        - [ ] Either walk user through initial setup or configure automatically via environment vars or similar
+        - [ ] Tell user PWs/to keep them safe
+        - [ ] Set-up auto updates (if not set-up centralized)
+        - [ ] O: Open browser with webpage of service (?)
+            - Better summary at installation end?
+    - [ ] Persona Creation
+        - [ ] Julia, 27
+            - photo
+            - Timetable (workday + free day)
+            - personality
+            - day-to-day life
+            - why does she need + would use the software?
+            - [ ] Sims Persona Video
+            - [ ] poster/one a3 page description
+        - [ ] Mark, 37
+            - photo
+            - Timetable (workday + free day)
+            - personality
+            - day-to-day life
+            - why does he need + would use the software?
+            - [ ] Sims Persona Video
+            - [ ] poster/one a3 page description
+    - [ ] _EXTREMELY GOOD_ documentation/installation guide
+        - DAU user must be able to follow
+        - must explain external steps (e.g. renting server) too
+        - must have an FAQ for all steps
+        - must have pictures
+        - should use GitBook (or the new hot shit equivalent which I forgot the name of...something made in Rust?)
+        - must guide through installation routine, even though installation program should be self-guided
+    - [ ] O: Mechanism for backing up volumes with data
+        - [ ] ... Well, how indeed?
+        - Maybe an extra image which tar.gzs. all volumes with special name?
+        - Or is there an image for that already, for backing up docker data-volumes?
+        - Either way, this is __NOT__ minimal :D
+    - [ ] Do we need Traefic or Caddy for proxing?
+- [ ] O: Optional 
+    - [ ] AnsibleRole: Bitwarden
+        - Complicated, very so
+    - [ ] AnsibleRole: Startpage/HomePage for all Services
+    - [ ] AnsibleRole: RSS-Reader
+    - [ ] AnsibleRole: WebMail Client
+    - [ ] AnsibleRole: Monitoring
+    - [ ] AnsibleRole: Portainer (?)
+    - [ ] AnsibleRole: Mindmap Software
+    - [ ] AnsibleRole: Git-Server
+    - [ ] AnsibleRole: Music-Streaming/Media-Streamer
+    - [ ] Sophisticated Installation Program/Routine
+        - E.g. Via web + server in backend (local backend)
+        - Via actual GUI program (which uses/replaces openVPN gui)
+        - via both
+        - cross platform via electron/REST-server (?)
+
+## User settable vars:
+- user.hostname
+    - The name of the server
+    - Used in fake-URLS
