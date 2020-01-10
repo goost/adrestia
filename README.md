@@ -8,14 +8,18 @@ Improve your life with Adrestia.
 ![](./images/architecture.png)
 
 ## Notes
-Minimal Version
+
+### Minimal Version
 * modular
 * minimal NextCloud
 * docker
 * Office (NextCloud Connection)
 * SecureConnection -> OpenVPN
 
-Optional Features
+* Caddy or Traeffik Proxy/Domain?
+* Backups of Containers via mounting and backup software on well-known mount location
+
+### Optional Features
 * Startpage
 * Monitoring Page
 * Financial Manager		    -> FireflyIII or app.financier.io
@@ -28,5 +32,13 @@ Optional Features
 * Backups
 * Read-it-later
 * Mindmap Software
+* Bitwarden (needs individual Licensing Key (which is free but still...), also needs HTTPS and Domain, so nope)
+    * Bitwarden-rs lightweight server implementation?
+
+### Commands
+
+* getent hosts <domain>
+
+
 
 
