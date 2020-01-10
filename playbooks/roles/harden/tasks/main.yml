@@ -1,0 +1,44 @@
+---
+# tasks file for playbooks/roles/harden
+
+- name: "Create Ansible user"
+  # TODO (glost): Really needed? Or just use root for initial everything?
+  user:
+    append: True
+
+- name: Create a 2048-bit SSH key for user jsmith in ~jsmith/.ssh/id_rsa
+  user:
+    name: jsmith
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+# Is this local or remote?
+- name: "Generate SSH key pair"
+  openssh_keypair:
+    path: ./.secrets/ssh/id_ed25519
+    type: ed25519
+    comment: "adrestia@{{ user.hostname }}"
+    register: ssh_keys
+
+- debug:
+    var: ssh_keys.public_key
+- debug:
+    var: ssh_keys.filename
+
+
+- name: "Harden SSH via secure configuration"
+  become: true
+  template: 
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    backup: yes
+    owner: root
+    group: root
+    mode: 0600
+    validate: '/usr/sbin/sshd -t -f %s'
+  notify:
+    - restart sshd
+  tags:
+    - harden
+    - ssh
