@@ -7,6 +7,7 @@
     - [ ] Set-up automatic docs creation
         - Github pages?
     - [ ] Lint ansible scripts and everything
+    - [ ] Tests
 - [ ] Bootstrap
     - [ ] O: AnsiblePlay: Encrypt System (?)
         - Non-trivial + Complicates startup (encryption needed via dropbear + ssh + passfifo key)
