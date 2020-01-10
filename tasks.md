@@ -40,6 +40,7 @@
         - [ ] SetUp unattended updates
             - Auto-restart vs. no auto-restart
                 - Bad on encrypted system, easy on non
+        - [ ] O: fwknop
         - [ ] O: Sophisticated auto-update for docker-images
             - Cron Job?
             - Docker Watchtower?
