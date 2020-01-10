@@ -1,0 +1,11 @@
+all:
+  hosts:
+    adrestia_bootstrap: # password root login for first installation
+      #ask for pw on bash
+      ansible_host: <FILLED IN BY USER/PROGRAM>
+      ansible_user: root
+    adrestia: # generated SSH login after hardening
+        ansible_host: <FILLED IN BY USER/PROGRAM>
+        ansible_user: adrestia
+        ansible_port: <RANDOMIZE?>
+        ansible_private_key: "./.secrets/ssh/id_ed25519"
