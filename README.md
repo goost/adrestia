@@ -56,7 +56,7 @@ Example of a working day of Julia:\
 
 ## Architecture
 
-![](./images/architecture.png)
+![](./docs/images/architecture.png)
 
 ## Basics
 
