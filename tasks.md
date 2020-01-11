@@ -7,6 +7,7 @@
     - [ ] Set-up automatic docs creation
         - Github pages?
     - [ ] Lint ansible scripts and everything
+        - Lint docker-compose & dockerbuild
     - [ ] Tests
 - [ ] Bootstrap
     - [ ] O: AnsiblePlay: Encrypt System (?)
