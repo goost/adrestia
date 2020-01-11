@@ -1,31 +1,46 @@
 ---
 # tasks file for playbooks/roles/harden
 
-- name: "Create Ansible user"
-  # TODO (glost): Really needed? Or just use root for initial everything?
-  user:
-    append: True
-
-- name: Create a 2048-bit SSH key for user jsmith in ~jsmith/.ssh/id_rsa
-  user:
-    name: jsmith
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa
-
-# Is this local or remote?
+# This is remote!
 - name: "Generate SSH key pair"
   openssh_keypair:
-    path: ./.secrets/ssh/id_ed25519
+    path: '/tmp/id_adrestia'
     type: ed25519
     comment: "adrestia@{{ user.hostname }}"
-    register: ssh_keys
+  register: ssh_keys
+  tags:
+    - harden
+    - ssh
+
+- name: "Fetch generetad private SSH key"
+  when: ssh_keys.changed
+  fetch:
+    flat: yes
+    src: '/tmp/{{ item }}'
+    dest: "{{ security.secrets + '/ssh/' }}"
+  loop:
+    - id_adrestia
+    - id_adrestia.pub
+  tags:
+    - harden
+    - ssh
 
 - debug:
-    var: ssh_keys.public_key
+    var: ssh_keys
 - debug:
-    var: ssh_keys.filename
+    var: security
+    
 
+- name: "Upload generated SSH key as authorized_key"
+  authorized_key:
+    user: adrestia
+    state: present
+    key: "{{ ssh_keys.public_key }}"
+  tags:
+    - harden
+    - ssh
+
+#TODO (glost) ADD FINGERPRINT TO AUTHORIZED HOSTS!
 
 - name: "Harden SSH via secure configuration"
   become: true
@@ -38,7 +53,7 @@
     mode: 0600
     validate: '/usr/sbin/sshd -t -f %s'
   notify:
-    - restart sshd
+    - Restart SSH server
   tags:
     - harden
     - ssh

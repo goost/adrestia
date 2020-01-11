@@ -1,0 +1,5 @@
+---
+
+- name: "Test connection to {{ inventory_hostname }}"
+  become: true
+  ping:

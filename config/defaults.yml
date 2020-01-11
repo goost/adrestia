@@ -1,0 +1,4 @@
+# Defaults, preferable not changed
+security:
+  ssh_port_number: "{{ 60000 |random(seed=user.hostname, start=2000) }}"
+  secrets: "{{ inventory_dir | realpath + '/.secrets/' }}"

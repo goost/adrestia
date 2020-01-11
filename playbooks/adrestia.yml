@@ -1,0 +1,22 @@
+---
+- import_playbook: bootstrap-python.yml
+
+- hosts: adrestia_bootstrap
+  ignore_unreachable: True
+  ignore_errors: True
+  vars_files:
+    - '{{ playbook_dir }}/../config/user.yml'
+    - '{{ playbook_dir }}/../config/defaults.yml'
+  roles:
+    - harden
+
+- hosts: adrestia
+  gather_facts: false
+  tasks:
+  - debug: 
+      var:  ansible_private_key
+  vars_files:
+    - '{{ playbook_dir }}/../config/user.yml'
+    - '{{ playbook_dir }}/../config/defaults.yml'
+  #roles:
+  #  - conn-check

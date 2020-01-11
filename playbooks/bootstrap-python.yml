@@ -1,6 +1,8 @@
 ---
-- hosts: all
-  remote_user: root #should be root on fresh install with no other user
+- hosts: adrestia_bootstrap
+  ignore_unreachable: True
+  ignore_errors: True 
+  remote_user: adrestia #we ask for creation of 'adrestia' user during installation
   become: true
   gather_facts: false #fact gathering depends on python
   tasks:
@@ -13,8 +15,3 @@
   - name: Install Python
     raw: apt -y update && apt install -y python3-minimal
     when: check_python.rc != 0
-
-    # CentOS and Ubuntu support in one
-    #- name: Install Python
-    #  raw: test -e /usr/bin/apt && (apt -y update && apt install -y python3-minimal) || (yum -y install python3 libselinux-python3)
-    #  when: check_python.rc != 0

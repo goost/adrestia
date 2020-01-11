@@ -1,5 +1,0 @@
----
-- import_playbook: bootstrap-python.yaml
-- hosts: adrestia_bootstrap
-  roles:
-    - harden
