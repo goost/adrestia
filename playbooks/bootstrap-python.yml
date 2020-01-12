@@ -12,5 +12,5 @@
     register: check_python
     # This only works for debian/apt based systems
   - name: Install Python
-    raw: apt -y update && apt install -y python3-minimal
+    raw: apt -y update && apt install -y python3-minimal python3-apt
     when: check_python.rc != 0

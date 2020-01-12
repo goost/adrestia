@@ -18,7 +18,6 @@
 - debug:
     var: security
     
-
 - name: "Upload generated SSH key as authorized_key"
   authorized_key:
     user: adrestia
@@ -27,7 +26,13 @@
   tags:
     - ssh
 
-#TODO (glost) ADD FINGERPRINT TO AUTHORIZED HOSTS!
+#FIXME (glost) Does not work
+- name: Make server known to host
+  known_hosts:
+    name: '{{ host }}'
+    key: '{{ host }} {{ ssh_keys.public_key }}'
+  vars:
+    host: "[{{ ansible_host }}]:{{ security.ssh_port_number }}"
 
 - name: "Harden SSH via secure configuration"
   become: true

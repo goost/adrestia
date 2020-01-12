@@ -1,5 +1,43 @@
 ---
 # tasks file for playbooks/roles/update
-- name: "Update system"
+- name: Update system
   apt:
-    
+    upgrade: full
+
+# TODO (glost) Does full include dist?
+- name: Update system
+  apt:
+    upgrade: dist
+
+- name: Install requirements for automatic updates
+  apt:
+    name: unattended-upgrades
+    state: latest
+    cache_valid_time: 3600
+
+- name: Configure automatic updates
+  lineinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '{{ item.regex }}'
+    line: '{{ item.replace }}'
+  loop:
+  - { regex: '"\${distro_id}:\${distro_codename}-updates";', replace: '        "${distro_id}:${distro_codename}-updates";' }
+  - { regex: 'Unattended-Upgrade::Remove-Unused-Dependencies "f', replace: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";' }
+  - { regex: 'Unattended-Upgrade::Automatic-Reboot "f', replace: 'Unattended-Upgrade::Automatic-Reboot "true";' }
+  - { regex: 'Unattended-Upgrade::Automatic-Reboot-Time "', replace: 'Unattended-Upgrade::Automatic-Reboot-Time "02:00";' }
+
+
+- name: Enable automatic updates
+  lineinfile:
+    create: yes
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    regexp: '{{ item[:21] }}'
+    line: '{{ item }}'
+  loop:
+    - 'APT::Periodic::Update-Package-Lists "1";' 
+    - 'APT::Periodic::Download-Upgradeable-Packages "1";' 
+    - 'APT::Periodic::AutocleanInterval "7";'
+    - 'APT::Periodic::Unattended-Upgrade "1";'
+
+- name: Reboot after full upgrade
+  reboot:

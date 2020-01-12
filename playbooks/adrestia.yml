@@ -17,10 +17,9 @@
 - hosts: adrestia
   gather_facts: true
   tasks:
-  - debug: 
-      var:  ansible_private_key
   vars_files:
     - '{{ playbook_dir }}/../config/user.yml'
     - '{{ playbook_dir }}/../config/defaults.yml'
-  #roles:
-  #  - conn-check
+  roles:
+    - role: update
+      become: true
