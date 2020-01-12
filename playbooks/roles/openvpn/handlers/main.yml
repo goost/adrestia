@@ -1,2 +1,7 @@
 ---
 # handlers file for playbooks/roles/openvpn
+- name: Fetch client config
+  fetch:
+    flat: yes
+    src: '/tmp/{{ user.hostname }}_client.ovpn'
+    dest: "{{ security.secrets + '/openvpn/' }}"

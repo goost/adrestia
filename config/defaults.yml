@@ -1,5 +1,9 @@
 # Defaults, preferable not changed
 security:
   ssh_port_number: "{{ 12767 |random(seed=user.hostname, start=1042) }}"
-  openvpn_port_number: "{{ 32767 |random(seed=user.hostname, start=12769) }}"
+  openvpn_port_number: 1194 #"{{ 32767 |random(seed=user.hostname, start=12769) }}"
   secrets: "{{ inventory_dir | realpath + '/.secrets/' }}"
+
+services:
+  network_name: docker-services-net
+  subnet_24: 172.20.20

@@ -3,8 +3,7 @@
 - name: Create a openvpn volume
   docker_volume:
     name: '{{ openvpn_volume_name }}'
-
-# CHANGE DIR
+    recreate: always
 
 - name: Create OpenVPN server configuration
   docker_container:
@@ -15,7 +14,60 @@
     network_mode: none
     networks_cli_compatible: yes
     cleanup: yes
-    auto_remove: yes
+    auto_remove: no
+    detach: no
+    pull: yes
+    command: "ovpn_genconfig -u udp://{{ ansible_host }} -C 'AES-256-CBC' -a 'SHA384' -s 42.42.42.0/24 -d -D -b -N -e 'push \"route {{ services.subnet_24 }}.0` 255.255.255.0\"' -e 'topology subnet' -e 'push \"dhcp-option DNS 42.42.42.1\"'"
 
-#docker run -v $OVPN_DATA:/etc/openvpn --net=none --rm kylemanna/openvpn ovpn_genconfig -u udp://5.9.65.68 -C 'AES-256-CBC' -a 'SHA384' -D -b -N -r 172.20.20.0/24 -e 'push "route 172.20.20.0 255.255.255.0"' -e 'topology subnet' -E 'comp-lzo no'
-#docker run -e EASYRSA_KEY_SIZE=4096 -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
+- name: Init OpenVPN server keys
+  docker_container:
+    name: openvpn-{{ user.hostname }}
+    image: kylemanna/openvpn
+    env:
+      EASYRSA_KEY_SIZE: '1024' # TODO (GLOST): RETURN TO SECURE 4096 ON RELEASE (and create test vs prod configs later)
+    volumes:
+      - '{{ openvpn_volume_name }}:/etc/openvpn'
+    network_mode: none
+    networks_cli_compatible: yes
+    cleanup: yes
+    auto_remove: no
+    detach: no
+    pull: yes
+    # TODO (glost) Insecure, but convenient. Need better handling, shell module with stdin?
+    command: "bash -c 'echo {{ user.hostname }} | ovpn_initpki nopass'"
+
+- name: Create pass-free openvpn client config
+  docker_container:
+    name: openvpn-{{ user.hostname }}
+    image: kylemanna/openvpn
+    tty: no
+    env:
+      EASYRSA_KEY_SIZE: '1024' # TODO (GLOST): RETURN TO SECURE 4096 ON RELEASE (and create test vs prod configs later)
+    volumes:
+      - '{{ openvpn_volume_name }}:/etc/openvpn'
+    network_mode: none
+    networks_cli_compatible: yes
+    cleanup: yes
+    auto_remove: no
+    detach: no
+    pull: yes
+    # TODO (glost) Insecure, but convenient. Need better handling
+    command: "easyrsa build-client-full {{ user.hostname }}_client nopass"
+
+- name: Retrieve openvpn client config from container
+  shell: docker run -v {{ openvpn_volume_name }}:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_getclient {{ user.hostname }}_client > /tmp/{{ user.hostname }}_client.ovpn
+  notify: Fetch client config
+
+- name: Template out OpenVPN systemd service
+  become: true
+  template:
+      dest: /etc/systemd/system/docker-openvpn@.service
+      src: docker-openvpn@.service.j2 
+
+- name: Start ovpn systemd service
+  become: true
+  systemd:
+    name: docker-openvpn@{{ user.hostname }}
+    enabled: yes
+    state: started
+

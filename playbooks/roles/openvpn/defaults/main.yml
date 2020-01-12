@@ -1,3 +1,2 @@
 ---
 # defaults file for playbooks/roles/openvpn
-openvpn_volume_name: 'ovpn-data-{{ user.hostname }}'

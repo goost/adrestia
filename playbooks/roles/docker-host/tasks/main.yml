@@ -45,9 +45,9 @@
 
 - name: Create docker service network
   docker_network:
-    name: '{{ services_network_name }}'
+    name: '{{ services.network_name }}'
     attachable: yes
     ipam_config:
-      - subnet: 172.20.20.0/24
-        gateway: 172.20.20.1
+      - subnet: '{{ services.subnet_24 }}.0/24'
+        gateway: '{{ services.subnet_24 }}.1'
 
