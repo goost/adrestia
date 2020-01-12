@@ -1,17 +1,21 @@
 ---
 - import_playbook: bootstrap-python.yml
+  tags: 
+    - bootstrap
 
 - hosts: adrestia_bootstrap
-  ignore_unreachable: True
-  ignore_errors: True
   vars_files:
     - '{{ playbook_dir }}/../config/user.yml'
     - '{{ playbook_dir }}/../config/defaults.yml'
+  tags:
+    - bootstrap
   roles:
-    - harden
+    - role: harden
+      tags:
+        - harden
 
 - hosts: adrestia
-  gather_facts: false
+  gather_facts: true
   tasks:
   - debug: 
       var:  ansible_private_key

@@ -4,5 +4,15 @@
   become: true
   service: name=sshd state=restarted
   tags: 
-    - harden
+    - ssh
+
+- name: "Fetch SSH keys"
+  fetch:
+    flat: yes
+    src: '/tmp/{{ item }}'
+    dest: "{{ security.secrets + '/ssh/' }}"
+  loop:
+    - id_adrestia
+    - id_adrestia.pub
+  tags:
     - ssh

@@ -1,8 +1,7 @@
 ---
 - hosts: adrestia_bootstrap
-  ignore_unreachable: True
-  ignore_errors: True 
-  remote_user: adrestia #we ask for creation of 'adrestia' user during installation
+  #Note (glost): we ask for creation of 'adrestia' user during installation (or do it ourselves in future versions)
+  remote_user: adrestia 
   become: true
   gather_facts: false #fact gathering depends on python
   tasks:

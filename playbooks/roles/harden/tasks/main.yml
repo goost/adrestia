@@ -8,21 +8,9 @@
     type: ed25519
     comment: "adrestia@{{ user.hostname }}"
   register: ssh_keys
+  notify:
+    - Fetch SSH keys
   tags:
-    - harden
-    - ssh
-
-- name: "Fetch generetad private SSH key"
-  when: ssh_keys.changed
-  fetch:
-    flat: yes
-    src: '/tmp/{{ item }}'
-    dest: "{{ security.secrets + '/ssh/' }}"
-  loop:
-    - id_adrestia
-    - id_adrestia.pub
-  tags:
-    - harden
     - ssh
 
 - debug:
@@ -37,7 +25,6 @@
     state: present
     key: "{{ ssh_keys.public_key }}"
   tags:
-    - harden
     - ssh
 
 #TODO (glost) ADD FINGERPRINT TO AUTHORIZED HOSTS!
@@ -55,5 +42,4 @@
   notify:
     - Restart SSH server
   tags:
-    - harden
     - ssh
