@@ -46,15 +46,15 @@ now and maybe you too.
 
 The next chapter "Basics" covers a few basics. If you already know what Ansible, Docker and Docker Compose are or you want to get straight to the practical use of Adrestia, you can skip this chapter.
 
-{% page-ref page="docs/pages/basics.md" %}
+{% include "docs/pages/basics.md" %}
 
 The chapter "About Adrestia" describes how the architecture and the structure of Adrestia looks like and what Adrestia contains. It also briefly describes the individual services provided by Adrestia.
 
-{% page-ref page="docs/pages/about-adrestia.md" %}
+{% include "docs/pages/about-adrestia.md" %}
 
-If you want to work directly with Andrestia, you can skip the above-mentioned two chapters and start with the chapter "Getting started".
+If you want to work directly with Adrestia, you can skip the above-mentioned two chapters and start with the chapter "Getting started".
 
-{% page-ref page="docs/pages/getting-started.md" %}
+{% include "docs/pages/getting-started.md" %}
 
 
 
