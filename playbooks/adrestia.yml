@@ -27,3 +27,5 @@
     - role: docker-host
       become: true
       tags: docker-host
+    - role: openvpn
+      tags: openvpn

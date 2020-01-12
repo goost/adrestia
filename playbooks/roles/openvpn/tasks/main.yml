@@ -2,4 +2,20 @@
 # tasks file for playbooks/roles/openvpn
 - name: Create a openvpn volume
   docker_volume:
-    name: 'ovpn-data-{{ user.hostname }}'
+    name: '{{ openvpn_volume_name }}'
+
+# CHANGE DIR
+
+- name: Create OpenVPN server configuration
+  docker_container:
+    name: openvpn-{{ user.hostname }}
+    image: kylemanna/openvpn
+    volumes:
+      - '{{ openvpn_volume_name }}:/etc/openvpn'
+    network_mode: none
+    networks_cli_compatible: yes
+    cleanup: yes
+    auto_remove: yes
+
+#docker run -v $OVPN_DATA:/etc/openvpn --net=none --rm kylemanna/openvpn ovpn_genconfig -u udp://5.9.65.68 -C 'AES-256-CBC' -a 'SHA384' -D -b -N -r 172.20.20.0/24 -e 'push "route 172.20.20.0 255.255.255.0"' -e 'topology subnet' -E 'comp-lzo no'
+#docker run -e EASYRSA_KEY_SIZE=4096 -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki

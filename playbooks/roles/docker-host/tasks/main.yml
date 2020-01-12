@@ -49,5 +49,5 @@
     attachable: yes
     ipam_config:
       - subnet: 172.20.20.0/24
-      - gateway: 172.20.20.1
+        gateway: 172.20.20.1
 
