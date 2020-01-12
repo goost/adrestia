@@ -1,7 +1,7 @@
 ---
 # tasks file for playbooks/roles/harden
 
-# This is remote!
+# Note(glost): This is remote! local_action: or delegate_to: 127.0.0.1 for host actions
 - name: "Generate SSH key pair"
   openssh_keypair:
     path: '/tmp/id_adrestia'
@@ -13,10 +13,10 @@
   tags:
     - ssh
 
-- debug:
-    var: ssh_keys
-- debug:
+- debug: 
     var: security
+
+# TODO (glost) Delete generated keys from tmp location
     
 - name: "Upload generated SSH key as authorized_key"
   authorized_key:
@@ -48,3 +48,27 @@
     - Restart SSH server
   tags:
     - ssh
+
+- name: Update/Install UFW
+  become: true
+  apt:
+    name: ufw
+    state: latest
+    cache_valid_time: 3600
+
+- name: Deny all access on default
+  become: true
+  ufw:
+    state: enabled
+    policy: deny
+
+- name: Open ports for SSH and OpenVPN
+  become: true
+  ufw:
+    port: '{{ item.port }}'
+    proto: '{{ item.proto }}' 
+    rule: allow 
+    state: enabled 
+  loop:
+    - { port: '{{ security.ssh_port_number }}', proto: tcp }
+    - { port: '{{ security.openvpn_port_number}}', proto: udp }

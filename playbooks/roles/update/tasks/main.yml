@@ -3,11 +3,19 @@
 - name: Update system
   apt:
     upgrade: full
+  notify: Reboot system
 
 # TODO (glost) Does full include dist?
 - name: Update system
   apt:
     upgrade: dist
+  notify: Reboot system
+
+- name: Install additional python modules
+  apt:
+    name: python3-apt,python3-pip
+    state: latest
+    cache_valid_time: 3600
 
 - name: Install requirements for automatic updates
   apt:
@@ -25,7 +33,7 @@
   - { regex: 'Unattended-Upgrade::Remove-Unused-Dependencies "f', replace: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";' }
   - { regex: 'Unattended-Upgrade::Automatic-Reboot "f', replace: 'Unattended-Upgrade::Automatic-Reboot "true";' }
   - { regex: 'Unattended-Upgrade::Automatic-Reboot-Time "', replace: 'Unattended-Upgrade::Automatic-Reboot-Time "02:00";' }
-
+  notify: Reboot system
 
 - name: Enable automatic updates
   lineinfile:
@@ -38,6 +46,4 @@
     - 'APT::Periodic::Download-Upgradeable-Packages "1";' 
     - 'APT::Periodic::AutocleanInterval "7";'
     - 'APT::Periodic::Unattended-Upgrade "1";'
-
-- name: Reboot after full upgrade
-  reboot:
+  notify: Reboot system

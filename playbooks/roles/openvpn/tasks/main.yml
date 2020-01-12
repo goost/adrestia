@@ -1,0 +1,5 @@
+---
+# tasks file for playbooks/roles/openvpn
+- name: Create a openvpn volume
+  docker_volume:
+    name: 'ovpn-data-{{ user.hostname }}'

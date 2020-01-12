@@ -23,3 +23,7 @@
   roles:
     - role: update
       become: true
+      tags: update
+    - role: docker-host
+      become: true
+      tags: docker-host

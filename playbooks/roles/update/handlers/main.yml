@@ -1,2 +1,4 @@
 ---
 # handlers file for playbooks/roles/update
+- name: Reboot system
+  reboot:

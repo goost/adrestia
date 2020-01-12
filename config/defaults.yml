@@ -1,4 +1,5 @@
 # Defaults, preferable not changed
 security:
-  ssh_port_number: "{{ 60000 |random(seed=user.hostname, start=2000) }}"
+  ssh_port_number: "{{ 12767 |random(seed=user.hostname, start=1042) }}"
+  openvpn_port_number: "{{ 32767 |random(seed=user.hostname, start=12769) }}"
   secrets: "{{ inventory_dir | realpath + '/.secrets/' }}"

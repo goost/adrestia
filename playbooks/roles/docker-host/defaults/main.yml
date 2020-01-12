@@ -1,0 +1,4 @@
+---
+# defaults file for playbooks/roles/docker-host
+docker_compose_version: 1.25.0
+services_network_name: docker-services-net

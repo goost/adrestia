@@ -1,0 +1,53 @@
+---
+# tasks file for playbooks/roles/docker-host
+- name: Install docker prerequesites
+  apt:
+    name:  apt-transport-https,ca-certificates,curl,gnupg-agent,software-properties-common
+    cache_valid_time: 3600
+
+- name: Add Dockers GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: Install docker-ce
+  apt:
+    name: docker-ce,docker-ce-cli,containerd.io
+    update_cache: true
+    state: latest
+
+- name: Install docker-compose
+  get_url: 
+    url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x,o+x'
+
+- name: Symlink docker-compose
+  file:
+    src: /usr/local/bin/docker-compose
+    dest: /usr/bin/docker-compose
+    state: link
+
+- name: Add user to group docker
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+
+- name: Install Docker SDK for python
+  pip:
+    name: docker
+
+- name: Create docker service network
+  docker_network:
+    name: '{{ services_network_name }}'
+    attachable: yes
+    ipam_config:
+      - subnet: 172.20.20.0/24
+      - gateway: 172.20.20.1
+
