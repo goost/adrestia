@@ -1,0 +1,36 @@
+version: "3"
+# TODO (glost): Auto config via Env vars
+services:
+  app:
+    image: linuxserver/piwigo
+    container_name: piwigo.{{ user.hostname }}
+    environment:
+      - PUID=1000 #TODO (glost): Only true for first user, needs fact_gathering
+      - PGID=1000
+      - TZ={{ user.timezone }} # TODO (glost) Var/Autodetect timezone
+    volumes:
+      - app:/config
+    restart: unless-stopped
+    networks:
+      default:
+      vpn:
+
+  db:
+    image: mariadb
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD="{{ lookup('password', security.secrets +'services/piwigo/mysqlrootpassword length=32') }}"
+      - MYSQL_PASSWORD="{{ lookup('password', security.secrets +'services/piwigo/mysqlpassword length=32') }}"
+      - MYSQL_DATABASE=piwigo
+      - MYSQL_USER=piwigo
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  app:
+  db:
+
+networks:
+  vpn:
+    external:
+      name: {{ services.network_name }}

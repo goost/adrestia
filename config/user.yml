@@ -1,3 +1,4 @@
 # Set by user
 user:
   hostname: adrestia
+  timezone: Europe/Berlin #TODO (glost) Autodetect?

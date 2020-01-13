@@ -1,2 +1,21 @@
 ---
 # tasks file for playbooks/roles/fireflyiii
+- name: Create service folder
+  file:
+    path: ~/docker/fireflyiii/
+    state: directory
+
+- name: Template out service compose file
+  template:
+      dest: ~/docker/fireflyiii/docker-compose.yml
+      src: docker-compose.yml.j2 
+
+- name: Start service via compose
+  docker_compose:
+    build: yes
+    pull: yes
+    project_src: ~/docker/fireflyiii
+  register: output
+
+- debug:
+    var: output
