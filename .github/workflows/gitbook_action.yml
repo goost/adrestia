@@ -38,8 +38,6 @@ jobs:
         gitbook build
     - name: push_to_pages
       run: |
-        #cd ./_book
-        #git init
         git config --global user.name "${{ secrets.GIT_NAME }}"
         git config --global user.email "${{ secrets.GIT_EMAIL }}"
         git checkout gh-pages
@@ -48,7 +46,6 @@ jobs:
         rm -rf _book
         git add *
         git commit -m "chore(*): Update gitbook pages from action"
-        #git push --force  "https://${{ secrets.THE_GITHUB_TOKEN }}@${{ secrets.THE_GITHUB_REF }}" master:${{ secrets.RES_FOR_PAGES }}
         git push
       env:
         CI: true

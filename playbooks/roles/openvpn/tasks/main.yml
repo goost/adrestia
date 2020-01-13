@@ -1,6 +1,11 @@
 ---
 # tasks file for playbooks/roles/openvpn
-- name: Create a openvpn volume
+- name: Remove leftover openvpn containers
+  docker_container:
+    name: openvpn-{{ user.hostname }}
+    state: absent
+
+- name: Create a openvpn docker volume
   docker_volume:
     name: '{{ openvpn_volume_name }}'
     recreate: always
