@@ -1,2 +1,26 @@
 ---
 # tasks file for playbooks/roles/nextcloud
+- name: Create nextcloud folder
+  file:
+    path: ~/docker/nextcloud/
+    state: directory
+
+- name: Template out nextcloud compose file
+  template:
+      dest: ~/docker/nextcloud/docker-compose.yml
+      src: docker-compose.yml.j2 
+
+- name: Copy nextcloud build definition to server
+  copy:
+    dest: ~/docker/nextcloud/ 
+    src: 'app'
+
+- name: Start nextcloud service via compose
+  docker_compose:
+    build: yes
+    pull: yes
+    project_src: ~/docker/nextcloud
+  register: output
+
+- debug:
+    var: output

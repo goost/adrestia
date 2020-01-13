@@ -39,9 +39,12 @@
     groups: docker
     append: true
 
-- name: Install Docker SDK for python
+- name: Install Docker SDK /composefor python
   pip:
-    name: docker
+    name: '{{ item }}'
+  loop:
+  - docker
+  - docker-compose
 
 - name: Create docker service network
   docker_network:

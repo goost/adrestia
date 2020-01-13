@@ -11,7 +11,6 @@
     failed_when: false
     register: check_python
     # This only works for debian/apt based systems
-    # FixMe(glost): Python3-pip is needed for Docker SDK for Python, which is needed for docker modules. Use them or use commands directly?
   - name: Install Python
     raw: apt -y update && apt install -y python3-minimal
     when: check_python.rc != 0

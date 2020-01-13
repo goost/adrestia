@@ -11,6 +11,7 @@
     upgrade: dist
   notify: Reboot system
 
+# FixMe(glost): Python3-pip is needed for Docker SDK for Python, which is needed for docker modules. Use them or use commands directly?
 - name: Install additional python modules
   apt:
     name: python3-apt,python3-pip

@@ -29,3 +29,5 @@
       tags: docker-host
     - role: openvpn
       tags: openvpn
+    - role: nextcloud
+      tags: nextcloud
