@@ -13,32 +13,33 @@
     - [ ] O: AnsiblePlay: Encrypt System (?)
         - Non-trivial + Complicates startup (encryption needed via dropbear + ssh + passfifo key)
         - Does it always so? Maybe less secure but easier way exists?
-    - [ ] AnsiblePlay: SetUp Python
-    - [ ] AnsiblePlay: Install docker + compose
+    - [x] AnsiblePlay: SetUp Python
+    - [x] AnsiblePlay: Install docker + compose
     - [ ] AnsiblePlay: SetUp VPN Connection
-        - [ ] Setup docker bridge network for services
-        - [ ] Use docker openVPN image for key creation
+        - x ] Setup docker bridge network for services
+        - x ] Use docker openVPN image for key creation
         - [ ] Leave keys at server or backup locally?
             - At server: easier, less secure, no backup -> server crash, all puff
             - Local: harder to maintain(need to scp every time?), backup in user's hands, more secure? less secure?
             - -> encrypted backup local + leave at server?
-        - [ ] Create Client Config
+        - [x] Create Client Config
             - With Extra route + DNS push 
-        - [ ] SCP client config to local
+        - [x] Fetch client config to local
         - [ ] Create OpenVPN image with enabled DNS port-forwarding
             - Jeez, how the heck did we do that? What was the name of the program? XD
-        - [ ] Create Autostart for openvpn container
+        - [x] Create Autostart for openvpn container
             - Systemd service vs. docker restart always
     - [ ] Install OpenVPN on local (?)
         - Or must client to on your own?
         - Or write complete program which uses OpenVPN lib for connection?
             - Way to overkill for now :D
-    - [ ] O: Reconnect via OpenVPN (?)
+    - [x] O: Reconnect via OpenVPN (?)
+        - Scrap that, unneeded for ansible setup
     - [ ] AnsiblePlay: Harden System
-        - [ ] Change SSH Port
-        - [ ] Create new Keys (? -> Preexisting are bad because? User used PW login!)
-        - [ ] Set Up Firewall (or setup Hoster-Firewall?)
-        - [ ] SetUp unattended updates
+        - [x] Change SSH Port
+        - [x] Create new Keys (? -> Preexisting are bad because? User used PW login!)
+        - [x] Set Up Firewall (or setup Hoster-Firewall?)
+        - [x] SetUp unattended updates
             - Auto-restart vs. no auto-restart
                 - Bad on encrypted system, easy on non
         - [ ] O: fwknop

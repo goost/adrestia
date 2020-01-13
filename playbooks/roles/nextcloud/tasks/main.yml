@@ -24,3 +24,10 @@
 
 - debug:
     var: output
+
+- name: Create cron job for automatic service updates
+  cron:
+    name: "Update nextcloud service"
+    minute: "0"
+    hour: "4"
+    job: "cd ~/docker/nextcloud && docker-compose build && docker-compose pull && docker-compose run -d"
